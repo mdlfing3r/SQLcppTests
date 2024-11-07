@@ -128,7 +128,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="MainProject.cpp" />
-    <ClCompile Include="source\src\shell.c" />
+    <ClCompile Include="source\src\shell.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="source\src\sqlite3.c" />
   </ItemGroup>
   <ItemGroup>

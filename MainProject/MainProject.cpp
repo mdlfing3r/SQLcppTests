@@ -1,4 +1,4 @@
-// MainProject.cpp : This file contains the 'main' function. Program execution begins and ends there.
+﻿// MainProject.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 
 #include <iostream>
@@ -30,10 +30,13 @@ typedef struct {
     nationality_t nation;
 } person_t;
 
+int callback(void* notUsed, int colCount, char** columns, char** colNames);
+
+
 int main()
 {
     const char *DBname = "persons.db";
-    sqlite3* db;    // ��������� �� ���� ������
+    sqlite3* db;    // указатель на базу данных
     std::cout << "Prepapare to database execution...\n";
 
     std::ifstream ifstr(DBname);
@@ -42,11 +45,15 @@ int main()
         std::cout << "WARNING: file with name: " << DBname << " is not exist\n";
         return 1;
     }
-    // ��������� ����������� � ���� ������
-    if (!sqlite3_open(DBname, &db)) {
+    // открываем подключение к базе данных
+    int rc = sqlite3_open(DBname, &db);
+    if (rc != SQLITE_OK) {
         std::cout << "can`t open required database\n";
         return 2;
     }
+    char* err_msg = 0;
+    std::string Shapka =
+        " ________________________________________________________\n| ID  |  Name   |   Sex   | Age | Weight |  Nationality  |\n_________________________________________________________\n";
     std::string 
           req = "SELECT * FROM PERSONS;"
         , resp
@@ -63,9 +70,35 @@ int main()
         resp.clear();
         buff.clear();
     }
-#endif
 
+    int sqlite3_exec(
+        sqlite3*,                                  /* подключение к бд */
+        const char* sql,                           /* код инструкций SQL */
+        int (*callback)(void*, int, char**, char**),  /* функция обратного вызова */
+        void*,                                    /* аргумент для функции обратного вызова */
+        char** errmsg                              /* сообщение об ошибке */
+    );
+#endif
+    std::cout << Shapka;
+
+    sqlite3_exec(db, req.c_str(), callback, 0, &err_msg);
+ 
     sqlite3_close(db);
+}
+
+int callback(void* notUsed, int colCount, char** columns, char** colNames)
+{
+    //for (int i = 0; i < colCount; i++)
+    //{
+        //printf("%s = %s\n", colNames[i], columns[i] ? columns[i] : "NULL");
+        std::string ouput = 
+         "|  " + std::string(columns[0]) + "  | " + std::string(columns[1]) + " | " + std::string(columns[2]) + "  | " + std::string(columns[3]) + "  |  " + std::string(columns[4]) + "    |    "+ std::string(columns[5]) + "   | \n" +
+          "_________________________________________________________\n";
+
+        std::cout << ouput;
+    //}
+    printf("\n");
+    return 0;
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
