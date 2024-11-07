@@ -1,0 +1,11 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs
+/MainProject
+/MainProject/.vs/MainProject
+/MainProject/MainProject.vcxproj.filters
+/MainProject/MainProject.vcxproj.user
+/MainProject/persons.db-journal
+/MainProject/x64/Debug
